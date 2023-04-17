@@ -53,11 +53,13 @@ list1 = re.finditer(regex, sequences, re.MULTILINE)  ## list of all lines with g
 count = 0
 pos_start_list = []
 pos_end_list = []
+genes_list = []
 
 print("These sequences where found with Keyword: ", keyword)
 # The following commands extract the pure(cleaned) sequence(Only bases) from the file
 for ind_s, i in enumerate(list1):
     string = i.group()
+    genes_list.append(string)
     print(ind_s, '.', string)
     try:
         start = int(i.start())
@@ -205,7 +207,7 @@ for index, seq in enumerate(cDNA_list):
                 counter += 1
                 print(
                     f"____________________ {counter}. PRIMERS FOUND MATCHING THE GIVEN CRITERIA _____________________\n"
-                    f"{cand}th candidate primer set for sequence {string[1:12]}: \n"
+                    f"{cand}th candidate primer set for sequence {genes_list[index][1:12]}: \n"
                     f"forward primer: {f}  Tm: {f_Tm}, GC_content: {f_GC} \n"
                     f"reverse primer: {r}  Tm: {r_Tm}, GC_content: {r_GC}\n"
                     f"Tm difference: {abs(f_Tm - r_Tm)}\n"
@@ -213,36 +215,34 @@ for index, seq in enumerate(cDNA_list):
             else:
 
                 print(
-                    f"The script found these primers for sequence [ {string[1:12]} ] but Tm of the candidate primers was not "
+                    f"The script found these primers for sequence [ {genes_list[index][1:12]} ] but Tm of the candidate primers was not "
                     f"in the desired range (55-62°C) or diverged more than 4°C in Tm from each other\n "
                     f"forward primer: {f}  Tm: {f_Tm}, GC_content: {f_GC} \n"
                     f"reverse primer: {r}  Tm: {r_Tm}, GC_content: {r_GC} \n"
-                    f"The difference is {abs(f_Tm - r_Tm)}°C \n"
-                    f"\n")
+                    f"The difference is {abs(f_Tm - r_Tm)}°C \n")
                 try:
                     f_alter = "NA"
                     r_alter = "NA"
 
                     # Applying one artificial mismatch to optimize the Tm
                     if f_Tm < 55:
-                        f_alter = replacenth(f, "A", "G", 4)  # replaces the 4th A with G
+                        f_alter = replacenth(f, "A", "G", 3)  # replaces the 3rd A with G
 
                     if f_Tm > 62:
-                        f_alter = replacenth(f, "G", "A", 4)  # replaces the 4th G with A
+                        f_alter = replacenth(f, "G", "A", 3)  # replaces the 3rd G with A
 
                     if r_Tm < 55:
-                        r_alter = replacenth(f, "T", "C", 4)  # replaces the 4th T with C
+                        r_alter = replacenth(r, "T", "C", 3)  # replaces the 3rd T with C
 
                     if r_Tm > 62:
-                        r_alter = replacenth(f, "C", "T", 4)  # replaces the 4th C with T
+                        r_alter = replacenth(r, "C", "T", 3)  # replaces the 3rd C with T
 
                     f_alter_Tm, f_alter_GC = tm_gc(f_alter)
                     r_alter_Tm, r_alter_GC = tm_gc(r_alter)
 
                     if f_alter_GC != 0:
-                        print(f"Suggested alternatives would be: \n"
-                              f"forward primer: {f_alter} Tm: {f_alter_Tm} GC: {f_alter_GC}\n")
+                        print(f"Suggested alternative for forward primer: {f_alter} Tm: {f_alter_Tm} GC: {f_alter_GC}\n")
                     if r_alter_GC != 0:
-                        print(f"reverse primer: {r_alter} Tm: {r_alter_Tm} GC: {r_alter_GC}\n")
+                        print(f"Suggested alternative for reverse primer: {r_alter} Tm: {r_alter_Tm} GC: {r_alter_GC}\n")
                 except:
                     pass
