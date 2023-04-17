@@ -192,10 +192,10 @@ for index, seq in enumerate(cDNA_list):
                         f_alter = replacenth(f, "G", "A", 4)  # replaces the 4th G with A
 
                     if r_Tm < 55:
-                        r_alter = replacenth(f, "T", "C", 4)  # replaces the 4th T with C
+                        r_alter = replacenth(r, "T", "C", 4)  # replaces the 4th T with C
 
                     if r_Tm > 62:
-                        r_alter = replacenth(f, "C", "T", 4)  # replaces the 4th C with T
+                        r_alter = replacenth(r, "C", "T", 4)  # replaces the 4th C with T
 
                     f_alter_Tm, f_alter_GC = tm_gc(f_alter)
                     r_alter_Tm, r_alter_GC = tm_gc(r_alter)
