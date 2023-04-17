@@ -9,4 +9,6 @@ the script takes two inputs:
 2. Keyword(s)
 
 example command to run the script:
+```
 python script.py -f fastafile.txt -k SCARCROW,scarecrow
+```
